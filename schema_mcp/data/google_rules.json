@@ -1,0 +1,772 @@
+{
+  "reviewed": "2026-11-24",
+  "notes": "Curated rules layered on top of Schema.org. Google rich-result rules were checked against the live developers.google.com pages on the review date. Merchant Center rules map the Merchant Center product data specification onto Schema.org properties and were curated, not machine-extracted. Path syntax: 'a.b' walks nested objects, 'x|y' means any one of them satisfies the rule.",
+  "features": [
+    {
+      "id": "product-snippet",
+      "name": "Product snippet (reviews, ratings, price)",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/product-snippet",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "Product"
+      ],
+      "exclude_subtypes": [
+        "ProductGroup"
+      ],
+      "rules": {
+        "Product": {
+          "required": [
+            "name",
+            "review|aggregateRating|offers"
+          ],
+          "recommended": [
+            "aggregateRating",
+            "offers",
+            "review"
+          ]
+        },
+        "Offer": {
+          "required": [
+            "price|priceSpecification.price"
+          ],
+          "recommended": [
+            "availability",
+            "priceCurrency|priceSpecification.priceCurrency",
+            "priceValidUntil"
+          ]
+        },
+        "AggregateOffer": {
+          "required": [
+            "lowPrice",
+            "priceCurrency"
+          ],
+          "recommended": [
+            "highPrice",
+            "offerCount"
+          ]
+        },
+        "Review": {
+          "required": [
+            "author",
+            "reviewRating",
+            "reviewRating.ratingValue"
+          ],
+          "recommended": [
+            "datePublished",
+            "reviewRating.bestRating",
+            "reviewRating.worstRating"
+          ]
+        },
+        "AggregateRating": {
+          "required": [
+            "ratingValue",
+            "ratingCount|reviewCount"
+          ],
+          "recommended": [
+            "bestRating",
+            "worstRating"
+          ]
+        }
+      }
+    },
+    {
+      "id": "merchant-listing",
+      "name": "Merchant listing (Shopping knowledge panel, popular products, free listings)",
+      "layer": "google",
+      "modes": [
+        "merchant-center"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/merchant-listing",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "Product"
+      ],
+      "exclude_subtypes": [
+        "ProductGroup"
+      ],
+      "disallowed_types": {
+        "AggregateOffer": "Merchant listings require an Offer: the merchant has to be the seller. AggregateOffer is only accepted for product snippets."
+      },
+      "rules": {
+        "Product": {
+          "required": [
+            "name",
+            "image",
+            "offers"
+          ],
+          "recommended": [
+            "aggregateRating",
+            "audience",
+            "brand.name",
+            "category",
+            "color",
+            "description",
+            "gtin|gtin8|gtin12|gtin13|gtin14|isbn",
+            "hasAdultConsideration",
+            "hasCertification",
+            "inProductGroupWithID",
+            "isVariantOf",
+            "material",
+            "mpn",
+            "pattern",
+            "review",
+            "size",
+            "sku",
+            "subjectOf"
+          ]
+        },
+        "Offer": {
+          "required": [
+            "price|priceSpecification.price",
+            "priceCurrency|priceSpecification.priceCurrency"
+          ],
+          "recommended": [
+            "availability",
+            "hasMerchantReturnPolicy",
+            "itemCondition",
+            "priceValidUntil",
+            "shippingDetails",
+            "url"
+          ]
+        },
+        "UnitPriceSpecification": {
+          "required": [
+            "price",
+            "priceCurrency"
+          ],
+          "recommended": [
+            "priceType",
+            "referenceQuantity",
+            "validFrom",
+            "validThrough"
+          ]
+        },
+        "OfferShippingDetails": {
+          "required": [
+            "deliveryTime",
+            "shippingDestination",
+            "shippingRate",
+            "shippingRate.currency",
+            "shippingRate.value|shippingRate.maxValue"
+          ],
+          "recommended": []
+        },
+        "DefinedRegion": {
+          "required": [
+            "addressCountry"
+          ],
+          "recommended": [
+            "addressRegion|postalCode"
+          ]
+        },
+        "ShippingDeliveryTime": {
+          "required": [],
+          "recommended": [
+            "handlingTime",
+            "transitTime"
+          ]
+        },
+        "MerchantReturnPolicy": {
+          "required": [
+            "applicableCountry",
+            "returnPolicyCategory"
+          ],
+          "recommended": [
+            "merchantReturnDays",
+            "returnFees",
+            "returnMethod",
+            "returnShippingFeesAmount"
+          ]
+        },
+        "Certification": {
+          "required": [
+            "issuedBy"
+          ],
+          "recommended": [
+            "certificationIdentification",
+            "certificationRating"
+          ]
+        },
+        "PeopleAudience": {
+          "required": [],
+          "recommended": [
+            "suggestedGender",
+            "suggestedMinAge|suggestedAge.minValue",
+            "suggestedMaxAge|suggestedAge.maxValue"
+          ]
+        },
+        "Review": {
+          "required": [
+            "author",
+            "reviewRating",
+            "reviewRating.ratingValue"
+          ],
+          "recommended": [
+            "datePublished"
+          ]
+        },
+        "AggregateRating": {
+          "required": [
+            "ratingValue",
+            "ratingCount|reviewCount"
+          ],
+          "recommended": [
+            "bestRating",
+            "worstRating"
+          ]
+        }
+      }
+    },
+    {
+      "id": "merchant-center",
+      "name": "Merchant Center product data (structured data used for automatic item updates and listings)",
+      "layer": "merchant-center",
+      "modes": [
+        "merchant-center"
+      ],
+      "source": "https://support.google.com/merchants/answer/7052112",
+      "reviewed": "2026-11-24",
+      "basis": "curated mapping of feed attributes to Schema.org",
+      "applies_to": [
+        "Product"
+      ],
+      "exclude_subtypes": [
+        "ProductGroup"
+      ],
+      "rules": {
+        "Product": {
+          "required": [
+            "description"
+          ],
+          "conditional": [
+            {
+              "path": "brand.name",
+              "when": "Required for all new products except movies, books and music recordings (feed attribute: brand)."
+            },
+            {
+              "path": "gtin|gtin8|gtin12|gtin13|gtin14|isbn|mpn",
+              "when": "Provide the GTIN for every product the manufacturer assigned one to; otherwise provide mpn (feed attributes: gtin / mpn)."
+            },
+            {
+              "path": "color",
+              "when": "Required for apparel and accessories in some target countries (feed attribute: color)."
+            },
+            {
+              "path": "size",
+              "when": "Required for clothing and shoes in some target countries (feed attribute: size)."
+            },
+            {
+              "path": "audience.suggestedGender",
+              "when": "Required for apparel in some target countries (feed attribute: gender)."
+            }
+          ],
+          "recommended": []
+        },
+        "Offer": {
+          "required": [
+            "availability"
+          ],
+          "conditional": [
+            {
+              "path": "itemCondition",
+              "when": "Required when the product is used or refurbished (feed attribute: condition)."
+            }
+          ],
+          "recommended": []
+        }
+      },
+      "notes": "Only lists what Merchant Center asks for beyond the Google merchant-listing rich result requirements; validate in merchant-center mode to get both layers."
+    },
+    {
+      "id": "product-variants",
+      "name": "Product variants (ProductGroup)",
+      "layer": "google",
+      "modes": [
+        "google",
+        "merchant-center"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/product-variants",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "ProductGroup"
+      ],
+      "rules": {
+        "ProductGroup": {
+          "required": [
+            "name"
+          ],
+          "recommended": [
+            "aggregateRating",
+            "brand.name",
+            "description",
+            "hasVariant",
+            "productGroupID",
+            "review",
+            "url",
+            "variesBy"
+          ]
+        }
+      }
+    },
+    {
+      "id": "article",
+      "name": "Article",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/article",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "Article"
+      ],
+      "rules": {
+        "Article": {
+          "required": [],
+          "recommended": [
+            "author",
+            "author.name",
+            "dateModified",
+            "datePublished",
+            "headline",
+            "image"
+          ]
+        }
+      }
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/breadcrumb",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "BreadcrumbList"
+      ],
+      "rules": {
+        "BreadcrumbList": {
+          "required": [
+            "itemListElement"
+          ],
+          "recommended": []
+        },
+        "ListItem": {
+          "required": [
+            "name",
+            "position"
+          ],
+          "conditional": [
+            {
+              "path": "item",
+              "when": "Required on every ListItem except the last one in the trail."
+            }
+          ],
+          "recommended": []
+        }
+      }
+    },
+    {
+      "id": "organization",
+      "name": "Organization",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/organization",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "Organization"
+      ],
+      "exclude_subtypes": [
+        "LocalBusiness"
+      ],
+      "rules": {
+        "Organization": {
+          "required": [],
+          "recommended": [
+            "name",
+            "url",
+            "logo",
+            "address",
+            "contactPoint",
+            "sameAs",
+            "description",
+            "email",
+            "telephone",
+            "legalName",
+            "alternateName",
+            "foundingDate",
+            "vatID",
+            "taxID",
+            "iso6523Code",
+            "duns",
+            "leiCode",
+            "naics",
+            "numberOfEmployees",
+            "hasMerchantReturnPolicy",
+            "hasMemberProgram",
+            "hasShippingService"
+          ]
+        }
+      }
+    },
+    {
+      "id": "local-business",
+      "name": "Local business",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/local-business",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "LocalBusiness"
+      ],
+      "rules": {
+        "LocalBusiness": {
+          "required": [
+            "name",
+            "address"
+          ],
+          "recommended": [
+            "aggregateRating",
+            "department",
+            "geo",
+            "geo.latitude",
+            "geo.longitude",
+            "menu",
+            "openingHoursSpecification",
+            "priceRange",
+            "review",
+            "servesCuisine",
+            "telephone",
+            "url"
+          ]
+        },
+        "OpeningHoursSpecification": {
+          "required": [],
+          "recommended": [
+            "dayOfWeek",
+            "opens",
+            "closes"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe",
+      "name": "Recipe",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/recipe",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "Recipe"
+      ],
+      "rules": {
+        "Recipe": {
+          "required": [
+            "name",
+            "image"
+          ],
+          "recommended": [
+            "aggregateRating",
+            "author",
+            "cookTime",
+            "datePublished",
+            "description",
+            "keywords",
+            "nutrition.calories",
+            "prepTime",
+            "recipeCategory",
+            "recipeCuisine",
+            "recipeIngredient",
+            "recipeInstructions",
+            "recipeYield",
+            "totalTime",
+            "video"
+          ]
+        },
+        "HowToStep": {
+          "required": [
+            "text"
+          ],
+          "recommended": [
+            "image",
+            "name",
+            "url",
+            "video"
+          ]
+        },
+        "HowToSection": {
+          "required": [
+            "name",
+            "itemListElement"
+          ],
+          "recommended": []
+        }
+      }
+    },
+    {
+      "id": "event",
+      "name": "Event",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/event",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "Event"
+      ],
+      "rules": {
+        "Event": {
+          "required": [
+            "name",
+            "startDate",
+            "location"
+          ],
+          "conditional": [
+            {
+              "path": "location.address",
+              "when": "Required when location is a Place (not a VirtualLocation)."
+            }
+          ],
+          "recommended": [
+            "description",
+            "endDate",
+            "eventStatus",
+            "image",
+            "location.name",
+            "offers",
+            "organizer",
+            "organizer.name",
+            "performer",
+            "performer.name",
+            "previousStartDate"
+          ]
+        },
+        "Offer": {
+          "required": [],
+          "recommended": [
+            "availability",
+            "price",
+            "priceCurrency",
+            "validFrom",
+            "url"
+          ]
+        }
+      }
+    },
+    {
+      "id": "review-snippet",
+      "name": "Review snippet",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/review-snippet",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "Review",
+        "AggregateRating"
+      ],
+      "top_level_only": true,
+      "rules": {
+        "Review": {
+          "required": [
+            "author",
+            "reviewRating",
+            "reviewRating.ratingValue"
+          ],
+          "conditional": [
+            {
+              "path": "itemReviewed",
+              "when": "Required when the Review is not nested inside the item it reviews."
+            }
+          ],
+          "recommended": [
+            "datePublished",
+            "reviewRating.bestRating",
+            "reviewRating.worstRating"
+          ]
+        },
+        "AggregateRating": {
+          "required": [
+            "ratingValue",
+            "ratingCount|reviewCount"
+          ],
+          "conditional": [
+            {
+              "path": "itemReviewed",
+              "when": "Required when the AggregateRating is not nested inside the item it rates."
+            }
+          ],
+          "recommended": [
+            "bestRating",
+            "worstRating"
+          ]
+        }
+      }
+    },
+    {
+      "id": "video",
+      "name": "Video",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/video",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "VideoObject"
+      ],
+      "rules": {
+        "VideoObject": {
+          "required": [
+            "name",
+            "thumbnailUrl",
+            "uploadDate"
+          ],
+          "recommended": [
+            "contentUrl",
+            "description",
+            "duration",
+            "embedUrl",
+            "expires",
+            "hasPart",
+            "interactionStatistic",
+            "regionsAllowed",
+            "ineligibleRegion"
+          ]
+        },
+        "Clip": {
+          "required": [
+            "name",
+            "startOffset",
+            "url"
+          ],
+          "recommended": [
+            "endOffset"
+          ]
+        }
+      }
+    },
+    {
+      "id": "job-posting",
+      "name": "Job posting",
+      "layer": "google",
+      "modes": [
+        "google"
+      ],
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/job-posting",
+      "reviewed": "2026-11-24",
+      "applies_to": [
+        "JobPosting"
+      ],
+      "rules": {
+        "JobPosting": {
+          "required": [
+            "title",
+            "description",
+            "datePosted",
+            "hiringOrganization",
+            "jobLocation"
+          ],
+          "recommended": [
+            "applicantLocationRequirements",
+            "baseSalary",
+            "directApply",
+            "employmentType",
+            "identifier",
+            "jobLocationType",
+            "validThrough"
+          ]
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "types": [
+        "Product",
+        "ProductGroup"
+      ],
+      "verdict": "Use ProductGroup when one page (or one family of pages) represents a product that comes in variants such as size, color or material. Mark the shared facts on the ProductGroup (name, brand, description, productGroupID, variesBy) and list each sellable variant as a Product under hasVariant, or point variants back with isVariantOf / inProductGroupWithID. Offers go on the variant Products, never on the ProductGroup, because the group itself is not sold. Use a plain Product when the page sells a single item with no variant selector.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/product-variants"
+    },
+    {
+      "types": [
+        "Offer",
+        "AggregateOffer"
+      ],
+      "verdict": "Use Offer when you are the seller: merchant listings accept only Offer. Use AggregateOffer on comparison or aggregator pages that summarise several sellers (lowPrice, highPrice, offerCount); it only qualifies for product snippets.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/merchant-listing"
+    },
+    {
+      "types": [
+        "Product",
+        "Offer"
+      ],
+      "verdict": "They are not alternatives. Product describes the item; Offer describes the terms of sale (price, currency, availability, shipping, returns). Nest the Offer in Product.offers.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/merchant-listing"
+    },
+    {
+      "types": [
+        "Article",
+        "BlogPosting"
+      ],
+      "verdict": "Google treats Article, NewsArticle and BlogPosting the same for the Article feature. Use the most specific type that is true: BlogPosting for blog posts, NewsArticle for news, Article otherwise.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/article"
+    },
+    {
+      "types": [
+        "Article",
+        "NewsArticle"
+      ],
+      "verdict": "Google treats Article, NewsArticle and BlogPosting the same for the Article feature. Use NewsArticle for news reporting and Article for other editorial content.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/article"
+    },
+    {
+      "types": [
+        "BlogPosting",
+        "NewsArticle"
+      ],
+      "verdict": "Both are Article subtypes that Google treats identically. Pick by content: news reporting is NewsArticle, blog content is BlogPosting.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/article"
+    },
+    {
+      "types": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "verdict": "LocalBusiness is a subtype of Organization for a physical location customers visit; it requires name and address for the local business feature. Use Organization (or a more specific type such as OnlineStore) on the home or about page for brand-level facts like logo, sameAs and contact points. A brand with stores typically has one Organization plus one LocalBusiness (or a more specific subtype) per location page.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/local-business"
+    },
+    {
+      "types": [
+        "Review",
+        "AggregateRating"
+      ],
+      "verdict": "Review is one person's or publication's review with a reviewRating and an author. AggregateRating summarises many ratings (ratingValue plus ratingCount or reviewCount). A product page often carries both: individual Review items and one AggregateRating.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/review-snippet"
+    },
+    {
+      "types": [
+        "Person",
+        "Organization"
+      ],
+      "verdict": "Use Person for an individual author or reviewer and Organization for a publisher or company. For Article author, Google asks for the actual author type; do not put a brand name into a Person.",
+      "source": "https://developers.google.com/search/docs/appearance/structured-data/article"
+    }
+  ]
+}
